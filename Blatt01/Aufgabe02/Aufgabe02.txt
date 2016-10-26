@@ -1,47 +1,40 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww12300\viewh14200\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+Aufgabe 2
 
-\f0\fs24 \cf0 \
-Aufgabe 2\
-\
-a)\
-Beispiel 1: Magnetisierung\
-Ein potentiell magnetisches Metall besteht aus vielen winzigen Magneten (Spins). Jeder Spin hat eine Ausrichtung, die mit seiner magnetischen Ladung \'fcbereinstimmt. \
-Normalerweise sind die Spins unterschiedlich ausgerichtet, sodass sich ihre Ladungen aufheben.  Zugrunde liegt die zuf\'e4llige Bewegung der Spins in dem Metall (Unordnung). Je w\'e4rmer das Metall ist, desto gr\'f6\'dfer ist die Bewegung der Spins und auch die Unordnung.\
-Wenn die Temperatur nach unten geht, richten sich die Spins spontan anhand ihrer Ladungen aus: Eine lokale Gruppe von Spins hat zuf\'e4llig die gleiche Orientierung. Der Zusammenschluss dieser Spins erzeugt eine gr\'f6\'dfere magnetische Kraft, die wiederum die umliegenden Spins beeinflusst (Attractor State). Diese schlie\'dfen sich nun auch dem Attractor State an, wodurch dessen magnetische Kraft wieder verst\'e4rkt wird. So entsteht ein positiver Feedback-Loop, durch den sich nach und nach alle Spins gleich ausrichten.\
-\
-Selbst-Organisation: Spontane magnetische Ausrichtung \
-[Definition Heylighen (-> spontane Entstehung eines globalen Musters durch lokale Interaktion) und Serugendo (-> es gibt keine explizite Anweisung von einer Kontrollinstanz, dass sich die Spins magnetisch ausrichten sollen)] \
-\
-Quellen: \
-https://www.youtube.com/watch?v=BTR17I_Eb_o&feature=youtu.be\
-http://pespmc1.vub.ac.be/SELFOREX.html\
-\
-Beispiel 2: Soziale Selbst-Organisation am Beispiel von Ethnischer regionaler Segregation\
-In St\'e4dten lassen sich in der Gruppierung von ethnischen Gruppen Strukturen erkennen: Bestimmte Viertel haben so zum Beispiel einen hohen Einwandereranteil, w\'e4hrend andere haupts\'e4chlich aus Einheimischen bestehen. Gleiche Sprache, Kultur, Religion, etc. dienen als Anziehungsfaktoren zwischen den Menschen. Je gr\'f6\'dfer die ethnische Gemeinschaft wird, umso einladender ist sie f\'fcr neue Bewohner derselben ethnischen Gruppe (Feedback-Loop). \
-Die Entstehung solcher Strukturen in St\'e4dten stellt eine Ordnung dar, die nicht geplant wurde (spontan). \
-\
-Selbst-Organisation: Entstehung von St\'e4dte-Strukturen\
-[Definition: Heylighen]\
-\
-Quelle: https://www.youtube.com/watch?v=8R8y5vUYKWc\
-\
-\
-b)\
-Beispiel 1: \
-Agenten: Spins, die eine magnetische Orientierung besitzen\
-Umwelt: Beeinflusst das System durch Temperatur\
-Interaktionen: \
-	Agent-Agent: Spins beeinflussen sich gegenseitig durch ihre magnetische Orientierung\
-	Agent-Umwelt: Die Umwelt beeinflusst die Bewegung der Spins durch die Temperatur. Die Spins beeinflussen im organisierten Zustand die Umwelt durch magnetische Kraft.\
-\
-Beispiel 2:\
-Agenten: Aktuelle und neue Bewohner einer Stadt\
-Umwelt: Stadt\
-Interaktion: \
-	Aktuelle Bewohner - neue Bewohner: Gleiche Sitten, Br\'e4uche, Sprache, Kultur, etc. auf beiden Seiten ziehen sich an\
-	Aktuelle Bewohner - aktuelle Bewohner: Es gilt die gleiche Anziehung wie bei neuen Bewohner -> die Struktur wird aufrecht erhalten\
-	Bewohner - Stadt: Die Aufteilung der Bewohner entscheiden \'fcber die ethnische Struktur der Stadt}
+a)
+Beispiel 1: Magnetisierung
+Ein potentiell magnetisches Metall besteht aus vielen winzigen Magneten (Spins). Jeder Spin hat eine Ausrichtung, die mit seiner magnetischen Ladung übereinstimmt. 
+Normalerweise sind die Spins unterschiedlich ausgerichtet, sodass sich ihre Ladungen aufheben.  Zugrunde liegt die zufällige Bewegung der Spins in dem Metall (Unordnung). Je wärmer das Metall ist, desto größer ist die Bewegung der Spins und auch die Unordnung.
+Wenn die Temperatur nach unten geht, richten sich die Spins spontan anhand ihrer Ladungen aus: Eine lokale Gruppe von Spins hat zufällig die gleiche Orientierung. Der Zusammenschluss dieser Spins erzeugt eine größere magnetische Kraft, die wiederum die umliegenden Spins beeinflusst (Attractor State). Diese schließen sich nun auch dem Attractor State an, wodurch dessen magnetische Kraft wieder verstärkt wird. So entsteht ein positiver Feedback-Loop, durch den sich nach und nach alle Spins gleich ausrichten.
+
+Selbst-Organisation: Spontane magnetische Ausrichtung 
+[Definition Heylighen (-> spontane Entstehung eines globalen Musters durch lokale Interaktion) und Serugendo (-> es gibt keine explizite Anweisung von einer Kontrollinstanz, dass sich die Spins magnetisch ausrichten sollen)] 
+
+Quellen: 
+https://www.youtube.com/watch?v=BTR17I_Eb_o&feature=youtu.be
+http://pespmc1.vub.ac.be/SELFOREX.html
+
+Beispiel 2: Soziale Selbst-Organisation am Beispiel von Ethnischer regionaler Segregation
+In Städten lassen sich in der Gruppierung von ethnischen Gruppen Strukturen erkennen: Bestimmte Viertel haben so zum Beispiel einen hohen Einwandereranteil, während andere hauptsächlich aus Einheimischen bestehen. Gleiche Sprache, Kultur, Religion, etc. dienen als Anziehungsfaktoren zwischen den Menschen. Je größer die ethnische Gemeinschaft wird, umso einladender ist sie für neue Bewohner derselben ethnischen Gruppe (Feedback-Loop). 
+Die Entstehung solcher Strukturen in Städten stellt eine Ordnung dar, die nicht geplant wurde (spontan). 
+
+Selbst-Organisation: Entstehung von Städte-Strukturen
+[Definition: Heylighen]
+
+Quelle: https://www.youtube.com/watch?v=8R8y5vUYKWc
+
+
+b)
+Beispiel 1: 
+Agenten: Spins, die eine magnetische Orientierung besitzen
+Umwelt: Beeinflusst das System durch Temperatur
+Interaktionen: 
+	Agent-Agent: Spins beeinflussen sich gegenseitig durch ihre magnetische Orientierung
+	Agent-Umwelt: Die Umwelt beeinflusst die Bewegung der Spins durch die Temperatur. Die Spins beeinflussen im organisierten Zustand die Umwelt durch magnetische Kraft.
+
+Beispiel 2:
+Agenten: Aktuelle und neue Bewohner einer Stadt
+Umwelt: Stadt
+Interaktion: 
+	Aktuelle Bewohner - neue Bewohner: Gleiche Sitten, Bräuche, Sprache, Kultur, etc. auf beiden Seiten ziehen sich an
+	Aktuelle Bewohner - aktuelle Bewohner: Es gilt die gleiche Anziehung wie bei neuen Bewohner -> die Struktur wird aufrecht erhalten
+	Bewohner - Stadt: Die Aufteilung der Bewohner entscheiden über die ethnische Struktur der Stadt
