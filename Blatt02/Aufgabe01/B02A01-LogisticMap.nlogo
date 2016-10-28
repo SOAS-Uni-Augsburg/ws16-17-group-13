@@ -9,7 +9,7 @@ globals [y-current y-new y-current' y-new' num-turtles-created turtlex0-who turt
 ;; PRE R_ in [0, 4.0), y in [0, 1]
 ;; POST Result of logistic map
 to-report logisticMap [R_ y]
-
+ report R_ * y * (1 - y)
 end
 
 ;; the initialization makes sure y-current and y-new are
@@ -17,7 +17,8 @@ end
 ;; PRE: none
 ;; POST: y-current equals y(0); y-new equals y(1)
 to initialize
-  ;; here your code
+  set y-current y0
+  set y-new logisticMap R y-current
 end
 
 ;; The transformation function performs exactly
@@ -25,7 +26,8 @@ end
 ;; PRE: y-current equals y(t); y-new equals y(t+1)
 ;; POST: y-current equals y(t+1); y-new equals y(t+2)
 to transformFunc
-
+  set y-current y-new
+  set y-new logisticMap R y-current
 end
 
 
@@ -348,6 +350,58 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+27
+79
+199
+112
+R
+R
+0
+4
+2.191
+0.001
+1
+NIL
+HORIZONTAL
+
+SLIDER
+28
+118
+200
+151
+y0
+y0
+0
+1
+0.701
+0.001
+1
+NIL
+HORIZONTAL
+
+MONITOR
+640
+47
+743
+92
+NIL
+y-current
+17
+1
+11
+
+MONITOR
+641
+100
+698
+145
+NIL
+y-new
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
