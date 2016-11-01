@@ -1,0 +1,9 @@
+Aufgabe 1 - 2d
+
+Wie verhält sich die Implementierung mit verschiedenen Werten für R?
+ - Bis zu einschließlich 2.9 gibt es nur einen Fixpunkt
+ - Im Bereich (0, 2,5] ist der Fixpunkt schnell erreicht (fast keine Pendelbewegung sichtbar)
+ - Im Bereich [2.6, 2.9] pendelt sich der Fixpunkt nach kurzer Zeit ein
+ - Ab R=3 ist eine Bifurkation zu sehen. Im Fall von R=3 hat diese 2 Häufungspunkte
+ - Bei R=3.5 hat die Bifurkation 4 Häufungspunkte
+ - Bei R=4 sind keine Häufungspunkte mehr erkennbar (Chaos)
