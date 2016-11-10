@@ -1,48 +1,226 @@
-
+turtles-own [infected energy immune]
 
 to setup
   clear-all
-  
-  set-default-shape turtles "circle"
-  
-  ; resize the world according to the world-size variable
-  resize-world (- world-size) world-size (- world-size) world-size
-  
-  ; create a number of beans
-  create-turtles bean-count
-  
-  ; place all beans on the same random patch
-  let x random-xcor
-  let y random-ycor
+  setup-turtles
+  reset-ticks
+end
+
+to setup-turtles
+  set-default-shape turtles "person"
+
+  create-turtles population-size
+
+  ; determine the number of zombies that are initially created
+  let number-of-zombies ((initial-zombie-percentage * population-size) / 100)
+  ; determine the number of immune people
+  let number-of-immunes ((immunity-percentage * (population-size - number-of-zombies)) / 100)
+
   ask turtles [
-    setxy x y
+    ; set turtle on random position
+    setxy random-xcor random-ycor
+
+    ifelse (count turtles with [infected = true] < number-of-zombies) [
+      ; make the turtle a zombie
+      set infected true
+      set color red
+      ; set zombie energy
+      set energy initial-zombie-energy
+    ]
+    [
+      ; make the turtle a human (and immune)
+      ifelse (count turtles with [immune = true] < number-of-immunes) [
+        set immune true
+      ]
+      [
+        set immune false
+      ]
+      set infected false
+      set color grey
+    ]
   ]
- 
-  reset-ticks 
 end
 
 to go
-  ; random move
-  move
-  
-  tick
-end
-
-to move
+  ; let all turtles move around
   ask turtles [
-    rt random 360
-    fd 1
+    move
+  ]
+  ; energy loss
+  ask turtles with [infected = true][
+    set energy energy - zombie-energy-loss-per-step
+  ]
+  ; check if zombies are dead
+  check-zombie-death
+
+  ; defend
+  ask turtles with [infected = false][
+    if(any? turtles-here with [infected = true]) and (random 100 < propability-to-kill-zombie) [
+      attack-zombie
+    ]
+  ]
+
+
+  ; zombies attack humans if there are any on the same patch
+  ask turtles with [infected = true] [
+    if(any? turtles-here with [infected = false]) [
+      attack-human
+      stop
+    ]
+  ]
+
+  ; reproduce
+  ask turtles with [infected = false][
+    if(any? turtles-here with [infected = false])[
+      let number-healthy-turtles (count turtles-here with [infected = false])
+      let counter 1
+      while [counter <= number-healthy-turtles][
+        if counter mod 2 = 0 [
+          reproduce
+        ]
+        set counter counter + 1
+      ]
+      stop
+    ]
+  ]
+
+  ; let humans die
+  grim-reaper
+
+  tick
+
+  ; stop the simulation if there aren't any turtles left
+  if count turtles = 0 [
+    stop
   ]
 end
+
+
+to move
+  ; turn randomly left or right by at most 180° and move one step ahead
+  right (random-float 360) - 180
+  forward 1
+end
+
+
+to attack-human
+  let energy-gain count turtles-here with [infected = false and immune = false]
+  ask turtles-here with [infected = false and immune = false][
+    ; transform the human into a zombie
+    set infected true
+    set color red
+    ; set initial zombie energy
+    set energy initial-zombie-energy
+  ]
+  set energy energy + (energy-gain * zombie-energy-gain-per-bite)
+end
+
+to attack-zombie
+  ask turtles-here with [infected = true][
+    die
+  ]
+end
+
+to check-zombie-death
+  ask turtles with [infected = true] [
+    if energy <= 0 [ die ]
+  ]
+end
+
+to reproduce
+  if random 100 < propability-for-humans-to-reproduce [  ; throw "dice" to see if you will reproduce
+    hatch 1 [be-born]
+  ]
+end
+
+to be-born
+  move
+
+  ifelse random 100 < immunity-percentage [
+    set immune true
+  ]
+  [
+    set immune false
+  ]
+  set infected false
+  set color grey
+end
+
+to grim-reaper
+  ; normal death because of age etc
+  ask turtles with [infected = false]
+  [
+    if random 100 < mortality-rate
+      [ die ]
+  ]
+
+  ; kill humans in excess of carrying capacity
+  let num-humans count turtles with [infected = false]
+  if num-humans <= carrying-capacity
+    [ stop ]
+  let chance-to-die (num-humans - carrying-capacity) / num-humans
+  ask turtles with [infected = false]
+  [
+    if random-float 1.0 < chance-to-die
+      [ die ]
+  ]
+end
+
+
+
+; b)
+; Erwartung: Entweder Zombies sterben aus und wenige Menschen überleben oder Menschen und Zombies sterben aus
+; (da Zombies nun nicht mehr ohne Menschen leben können)
+; Ist: Je nach Einstellung der Zombie-Energie überleben keine oder wenige Menschen. Zombies sterben immer aus
+
+; c)
+; Erwartung: Verhalten ähnlich zu b oder die Anzahl immuner Menschen überleben
+; Ist: Je nach Anzahl der immunen Menschen überleben mehr als die immune Bevölkerung oder genau die immune Bevölkerung
+
+; d)
+; Erwartung: Menschen und Zombies werden abwechselnd in Schüben weniger/mehr oder Zombies sterben ganz aus und Menschen werden immer mehr
+; Ist: Bei niedrigen (und sinnvollen) Werten für Reproduktion und Immunität, sterben die Zombies letztendlich aus und wenige Menschen überleben, die mit der Zeit sehr viele
+; Bei hohen Werten werden Menschen so schnell so viel, dass Netlogo nicht mehr mag (Zombies existieren aber auch noch)
+
+; e)
+; Erwartung: Mehr Menschen als in den vorigen Szenarien überleben
+; Ist: Bei einer Wahrscheinlichkeit, dass ein Mensch einen Zombie besiegt,  > 30 % bleibt ein Großteil der menschlichen Bevölkerung am Leben und die Zombies sterben schnell aus
+; Bei kleinerer Wahrscheinlichkeit bleiben meist nur immune Menschen und ein paar andere wenige am Leben und Zombies sterben nicht sol schnell aus
+
+; d)
+; Zusammenhang Sterblichkeit - Reproduktion?
+; Sterblichkeit muss echt kleiner sein als Reproduktion. Bei Gleichheit oder Sterblichkeit > Reproduktion stirbt die menschliche Bevölkerung schnell aus
+; Wann gewinnen Zombies?
+; Zombies gewinnen, wenn die Wahrscheinlichkeit, dass ein Mensch einen Zombie besiegt niedrig ist (10 %) und gleichzeitig der Energie-Anstieg durch Infizierung eines Menschen hoch ist (30).
+; Letzendlich sterben die Zombies ohne Menschen jedoch aus, da es sich dabei um ihre Nahrung handelt
+; Wann gewinnen Menschen?
+; Damit die Menschheit gewinnt (Zombies sterben aus und Menschen nicht), muss die Wahrscheinlichkeit, dass ein Mensch einen Zombie besiegt sehr hoch sein (50 %)
+; und die Reproduktionswahrscheinlichkeit der Menschen muss sehr hoch sein (20 %). Generell müssen Menschen Cluster bilden (für Reproduktion), um zu überleben
+; Stabile Koexistenz:
+; Bei zombie-energy-gain-per-bite = 20, propability-for-humans-to-reproduce = 20 % und propbility-to-kill-zombies = 20 stellt sich ein Gleichgewicht ein, falls die Menschen es schaffen
+; einen Cluster zu bilden
+; Realistische Werte:
+; Mortalität:
+; Deutschland/Europa: 9-10 pro 1000
+; USA/Nordamerika: 7-8 pro 1000
+; China: 5-6
+; Russland: 11-15
+; Teile Afrikas: 20+
+; Weltweit: 7,89/1000 (2014) -> 0,008
+; Geburtenziffer:
+; Deutschland 8 pro 1000
+; USA 20 pro 1000
+; Afrika + Südwest-Asien: 23-50 pro 1000
+; Weltweit: 19,5 pro 1000 (2015) -> 0,02
 @#$#@#$#@
 GRAPHICS-WINDOW
-219
+259
 10
-639
-451
-20
-20
-10.0
+764
+536
+16
+16
+15.0
 1
 10
 1
@@ -52,51 +230,21 @@ GRAPHICS-WINDOW
 1
 1
 1
--20
-20
--20
-20
+-16
+16
+-16
+16
 1
 1
 1
 ticks
 30.0
 
-SLIDER
-11
-49
-209
-82
-world-size
-world-size
-1
-50
-20
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-12
-89
-210
-122
-bean-count
-bean-count
-1
-5000
-1000
-1
-1
-NIL
-HORIZONTAL
-
 BUTTON
-10
-10
-108
-43
+11
+17
+99
+50
 NIL
 setup
 NIL
@@ -110,10 +258,10 @@ NIL
 1
 
 BUTTON
-117
-10
-208
-43
+12
+58
+101
+91
 NIL
 go
 T
@@ -125,6 +273,226 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+12
+105
+198
+138
+population-size
+population-size
+0
+500
+300
+1
+1
+NIL
+HORIZONTAL
+
+PLOT
+771
+12
+1195
+218
+Humans vs. Zombies
+time
+count
+0.0
+120.0
+0.0
+100.0
+true
+true
+"" ""
+PENS
+"Humans" 1.0 0 -3026479 true "" "plot count turtles with [infected = false]"
+"Zombies" 1.0 0 -2674135 true "" "plot count turtles with [infected = true]"
+"Immune Humans" 1.0 0 -10899396 true "" "plot count turtles with [immune = true]"
+
+SLIDER
+12
+143
+216
+176
+initial-zombie-percentage
+initial-zombie-percentage
+0
+100
+5
+1
+1
+%
+HORIZONTAL
+
+BUTTON
+109
+58
+186
+91
+go-once
+go
+NIL
+1
+T
+OBSERVER
+NIL
+G
+NIL
+NIL
+1
+
+MONITOR
+786
+238
+843
+283
+Humans
+count turtles with [infected = false]
+17
+1
+11
+
+MONITOR
+856
+239
+914
+284
+Zombies
+count turtles with [infected = true]
+17
+1
+11
+
+SLIDER
+21
+554
+262
+587
+zombie-energy-loss-per-step
+zombie-energy-loss-per-step
+0
+50
+1
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+21
+597
+260
+630
+zombie-energy-gain-per-bite
+zombie-energy-gain-per-bite
+0
+100
+10
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+21
+645
+260
+678
+initial-zombie-energy
+initial-zombie-energy
+0
+100
+30
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+307
+555
+596
+588
+immunity-percentage
+immunity-percentage
+0
+100
+5
+1
+1
+%
+HORIZONTAL
+
+SLIDER
+305
+601
+595
+634
+propability-for-humans-to-reproduce
+propability-for-humans-to-reproduce
+0
+100
+0.02
+0.001
+1
+%
+HORIZONTAL
+
+MONITOR
+785
+295
+887
+340
+Immune Humans
+count turtles with [immune = true]
+17
+1
+11
+
+SLIDER
+306
+646
+595
+679
+propability-to-kill-zombie
+propability-to-kill-zombie
+0
+100
+33
+1
+1
+%
+HORIZONTAL
+
+SLIDER
+617
+557
+820
+590
+mortality-rate
+mortality-rate
+0
+100
+0.008
+0.001
+1
+%
+HORIZONTAL
+
+SLIDER
+617
+600
+819
+633
+carrying-capacity
+carrying-capacity
+0
+1000
+600
+1
+1
+humans
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -177,6 +545,31 @@ arrow
 true
 0
 Polygon -7500403 true true 150 0 0 150 105 150 105 293 195 293 195 150 300 150
+
+bee
+true
+0
+Polygon -1184463 true false 152 149 77 163 67 195 67 211 74 234 85 252 100 264 116 276 134 286 151 300 167 285 182 278 206 260 220 242 226 218 226 195 222 166
+Polygon -16777216 true false 150 149 128 151 114 151 98 145 80 122 80 103 81 83 95 67 117 58 141 54 151 53 177 55 195 66 207 82 211 94 211 116 204 139 189 149 171 152
+Polygon -7500403 true true 151 54 119 59 96 60 81 50 78 39 87 25 103 18 115 23 121 13 150 1 180 14 189 23 197 17 210 19 222 30 222 44 212 57 192 58
+Polygon -16777216 true false 70 185 74 171 223 172 224 186
+Polygon -16777216 true false 67 211 71 226 224 226 225 211 67 211
+Polygon -16777216 true false 91 257 106 269 195 269 211 255
+Line -1 false 144 100 70 87
+Line -1 false 70 87 45 87
+Line -1 false 45 86 26 97
+Line -1 false 26 96 22 115
+Line -1 false 22 115 25 130
+Line -1 false 26 131 37 141
+Line -1 false 37 141 55 144
+Line -1 false 55 143 143 101
+Line -1 false 141 100 227 138
+Line -1 false 227 138 241 137
+Line -1 false 241 137 249 129
+Line -1 false 249 129 254 110
+Line -1 false 253 108 248 97
+Line -1 false 249 95 235 82
+Line -1 false 235 82 144 100
 
 box
 false
@@ -329,6 +722,18 @@ true
 0
 Line -7500403 true 150 0 150 150
 
+monster
+false
+0
+Polygon -7500403 true true 75 150 90 195 210 195 225 150 255 120 255 45 180 0 120 0 45 45 45 120
+Circle -16777216 true false 165 60 60
+Circle -16777216 true false 75 60 60
+Polygon -7500403 true true 225 150 285 195 285 285 255 300 255 210 180 165
+Polygon -7500403 true true 75 150 15 195 15 285 45 300 45 210 120 165
+Polygon -7500403 true true 210 210 225 285 195 285 165 165
+Polygon -7500403 true true 90 210 75 285 105 285 135 165
+Rectangle -7500403 true true 135 165 165 270
+
 pentagon
 false
 0
@@ -469,7 +874,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.1.0
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
